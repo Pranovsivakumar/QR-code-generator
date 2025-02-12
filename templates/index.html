@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url("background.jpg") no-repeat center center fixed; /* Change 'background.jpg' to your image */
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.9); /* Light transparent background */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 350px;
+        }
+        input {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 15px;
+            border: none;
+            background-color: #28a745;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .qr-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+        #qrImage {
+            max-width: 200px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>QR Code Generator</h2>
+        <form id="qrForm">
+            <input type="text" id="url" placeholder="Enter URL" required>
+            <button type="submit">Generate QR</button>
+        </form>
+        <div class="qr-container">
+            <img id="qrImage" alt="QR Code">
+        </div>
+        <button id="downloadBtn" style="display: none;">Download QR</button>
+    </div>
+
+    <script>
+        document.getElementById("qrForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            
+            let url = document.getElementById("url").value;
+            if (url.trim() === "") return;
+
+            let formData = new FormData();
+            formData.append("url", url);
+
+            fetch("/generate_qr", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                let qrImage = document.getElementById("qrImage");
+                let downloadBtn = document.getElementById("downloadBtn");
+                
+                let objectURL = URL.createObjectURL(blob);
+                qrImage.src = objectURL;
+                qrImage.style.display = "block";
+
+                downloadBtn.style.display = "inline-block";
+                downloadBtn.onclick = function() {
+                    let a = document.createElement("a");
+                    a.href = objectURL;
+                    a.download = "QR_Code.png";
+                    a.click();
+                };
+            })
+            .catch(error => console.error("Error:", error));
+        });
+    </script>
+
+</body>
+</html>
