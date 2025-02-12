@@ -18,7 +18,7 @@ This is a **QR Code Generator** that allows users to enter a link and generate a
 
 ### 1️⃣ Clone the Repository
 ```sh
-git clone https://github.com/yourusername/QR-code-generator.git
+git clone https://github.com/PawishrajhenAR/QR-code-generator.git
 cd QR-code-generator
 ```
 
