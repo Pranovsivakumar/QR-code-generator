@@ -54,7 +54,7 @@ The app will run at: **`http://127.0.0.1:5000/`**
 Feel free to submit **issues** and **pull requests**!
 
 ## 📜 License
-This project is licensed under the **MIT License**.
+This project is licensed under the **MIT License**..
 
 ---
 
